@@ -57,11 +57,32 @@ submitButton.addEventListener("click", function() {
   // WE DO TOGETHER - Part 3: The win case
   // **********************************************************
   // Let's write the WINNING case first!
+let historyUl = document.querySelector("#history");
+let historyItem = document.createElement("li");
+historyItem.innerHTML = guess;
+historyUl.appendChild(historyItem);
 
-  if (guess === secretNumber) {
+
+
+  if (isNaN(guess) || guess < 1 || guess > 100) {
+    feedback.innerHTML = "Input must be a number between 1 and 100!";
+    return;
+  } else if (guess === secretNumber) {
     feedback.innerHTML = "Correct! You got it!";
+    document.querySelector("#win-panel").classList.toggle("hidden");
     console.log("WINNER!");
+  } else if (guess < secretNumber) {
+    feedback.innerHTML = "Too low! Try higher.";
+    console.log("Too low");
+    createHistory(guess, "low");
+  } else {
+    feedback.innerHTML = "Too high! Try lower.";
+    console.log("Too high");
+    createHistory(guess, "high");
   }
+  
+  guessCount++;
+  countDisplay.innerHTML = guessCount;
 
   // ============================================================
   // YOUR TURN! Add the other cases and features below.
@@ -120,8 +141,8 @@ submitButton.addEventListener("click", function() {
   // document.querySelector("#win-panel").classList.toggle("hidden");
   //
   // Also update the spans inside the panel:
-  // document.querySelector("#answer").innerHTML = secretNumber;
-  // document.querySelector("#final-count").innerHTML = guessCount;
+  document.querySelector("#answer").innerHTML = secretNumber;
+  document.querySelector("#final-count").innerHTML = guessCount;
 
   // Your code here (add inside the winning if block):
 
@@ -146,8 +167,9 @@ submitButton.addEventListener("click", function() {
 
 // STRETCH 2: "You're close!" hint
 // When the guess is within 5 of the secret number, add a hint.
+
 // Use && to check: if the difference is <= 5 AND the guess isn't correct.
-//
+
 // let difference = Math.abs(guess - secretNumber);
 // if (difference <= 5 && guess !== secretNumber) {
 //   // Add "You're very close!" to the feedback
